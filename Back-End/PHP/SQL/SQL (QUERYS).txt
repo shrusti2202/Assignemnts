@@ -1,0 +1,92 @@
+CREATE DATABASE office;
+
+
+Creating Employee Table
+
+
+CREATE TABLE employee (id int ,first_name varchar ,last_name varchar , sallary int ,joining date ,department varchar );
+
+
+Inserting Employee Data into Employee Table
+
+
+INSERT INTO employee(first_name,last_name,sallary,joining,department) VALUES ("JOHN" , "ABRAHAM" ,1000000, "2013-02-01" ,"BANKING")
+("MICHAEL","CLARK", 8000000,"2013-02-01","INSURANCE"),
+("ROY", "THOMAS", 7000000, "2013-02-01", "BANKING"),
+("TOM", "JOSE", 6000000, "2013-02-01", "INSURANCE"),
+("JERRY","PINTO",650000, "2013-02-01", "INSURANCE"),
+("PHILIP","MATHEW", 750000, "2013-02-01","SERVICE"),
+("TESTNAME1","123", 650000, "2013-02-01","SERVICE"),
+("TESTNAME2","LNAME%"', 6000000, "2013-02-01", "INSURANCE");
+
+
+Creating Incentive Table
+
+
+CREATE TABLE Incentives(
+    incentive_id INT(11) PRIMARY KEY AUTO_INCREMENT, 
+    employee_ref_id INT(11), FOREIGN KEY (employee_ref_id) REFERENCES employee(id),
+    incentive_DATE DATETIME,
+    incentive_amt INT(6) );
+
+
+
+Inserting Data into Incentive Table
+
+
+INSERT INTO incentives(employee_ref_id,incentive_DATE,incentive_amt)
+VALUES
+(1, '2013-02-01', 5000),
+(2, '2013-02-01', 3000),
+(3, '2013-02-01', 4000),
+(1, '2013-01-01', 4500),
+(2, '2013-01-01', 3500);
+
+
+
+a) Get First_Name from employee table using alias name “Employee Name”. 
+         SELECT first_name AS "Employee Name" FROM employee;
+
+b) Get FIRST_NAME, Joining year, Joining Month and Joining Date from employee table.
+          SELECT first_name,joining(joining_Date) AS joining_Year,
+                            MONTH(joining_Date) AS joining_Month,
+                            DAY(joining_Date) AS joining_Date FROM employee;
+
+c) Get all employee details from the employee table order by First Name Ascending And Salary descending? 
+  1. First Name Ascending
+       SELECT * FROM employee ORDER BY first_name ASC;
+
+  2.Salary Descending
+       SELECT * FROM employee ORDER BY first_name DESC;
+
+d) Get employee details from employee table whose first name contains „o‟. 
+      SELECT * FROM employee WHERE first_name LIKE 'o%';
+
+e) Get employee details from employee table whose joining month is “January”. 
+      SELECT * FROM employee WHERE MONTH(joining_date) = 1;
+
+f) Get department, total salary with respect to a department from employee table
+    Order By total salary descending. 
+
+    SELECT department, SUM(sallary) AS total_salary FROM employee GROUP BY department ORDER BY total_salary DESC;
+
+g) Get department-wise maximum salary from employee table ordered by salary ascending
+
+   SELECT department, MAX(sallary) AS max_salary FROM employee GROUP BY department ORDER BY max_salary ASC;
+
+h) Select first_name, incentive amount from employee and incentives table for those employees who have incentives and incentive amount greater than 3000
+
+    SELECT e.first_name, i.incentive_amt FROM employee e JOIN incentives i ON e.id = i.employee_ref_id WHERE i.incentive_amt > 3000;
+
+i) Select 2nd highest salary from employee table
+    SELECT MAX(sallary) AS second_highest_salary FROM employee WHERE sallary < (SELECT MAX(sallary) FROM employee);
+
+j) Select first_name, incentive amount from employee and incentives table for all employees who got incentives using LEFT JOIN
+     SELECT e.first_name, i.incentive_amt FROM employee e LEFT JOIN incentives i ON e.id =  i.employee_ref_id;
+
+k) Create a view of Employee table which stores first name, last name, and salary only
+      CREATE VIEW employeeview AS SELECT first_name, last_name, sallary FROM employee;
+
+l) Create a procedure to find out department-wise highest salary
+
+
